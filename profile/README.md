@@ -20,6 +20,7 @@ OpenDecree is an open-source configuration management platform built for **busin
 | [decree-python](https://github.com/opendecree/decree-python) | Python SDK — [opendecree on PyPI](https://pypi.org/project/opendecree/) |
 | [decree-typescript](https://github.com/opendecree/decree-typescript) | TypeScript SDK — [@opendecree/sdk on npm](https://www.npmjs.com/package/@opendecree/sdk) |
 | [decree-ui](https://github.com/opendecree/decree-ui) | Admin GUI — React + Tailwind |
+| [demos](https://github.com/opendecree/demos) | Hands-on examples — try OpenDecree in 5 minutes |
 
 ## Status
 
