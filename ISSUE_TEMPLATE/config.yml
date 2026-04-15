@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or help request
+    url: https://github.com/opendecree/decree/discussions/categories/q-a
+    about: Ask questions in GitHub Discussions — issues are for bugs and feature requests only.
+  - name: Ideas and wishlist
+    url: https://github.com/opendecree/decree/discussions/categories/ideas
+    about: Share feature ideas and use cases for discussion before they become issues.
