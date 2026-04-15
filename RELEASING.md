@@ -118,6 +118,51 @@ When a decree release includes proto/API changes that affect SDKs:
 
 For decree-only changes (no API changes), SDK releases are not needed.
 
+## Compatibility Matrix
+
+Proto stubs are the coupling point. Both SDKs generate stubs from decree's `proto/` directory. The generated stubs must match the server version.
+
+### Proto Compatibility
+
+| SDK Version | Built Against Proto | Compatible Server Versions |
+|------------|--------------------|-----------------------------|
+| decree-python v0.1.0 | decree v0.5.0 proto | decree ≥ v0.5.0 |
+| decree-typescript v0.1.0 | decree v0.5.0 proto | decree ≥ v0.5.0 |
+| decree Go SDK v0.5.0 | same repo (api/ module) | decree ≥ v0.5.0 |
+
+**Rule:** When decree makes a proto change (new field, new RPC, breaking change), SDKs must regenerate stubs and release. Non-proto decree changes don't require SDK releases.
+
+### Runtime Requirements
+
+| Component | Requirement |
+|-----------|-------------|
+| decree server | PostgreSQL 17+, Redis 7+ (or `STORAGE_BACKEND=memory`) |
+| decree CLI | None (static binary) |
+| Go SDK | Go 1.24+ |
+| Python SDK | Python 3.11+ |
+| TypeScript SDK | Node.js 20+ |
+| Admin GUI | Modern browser (Chrome/Firefox/Safari/Edge) |
+
+### Stub Generation
+
+SDKs generate proto stubs from a local checkout of the decree repo:
+
+| SDK | Generator | Source | Output |
+|-----|-----------|--------|--------|
+| Go | buf (in Docker) | `proto/` | `api/centralconfig/v1/*.pb.go` (committed) |
+| Python | grpcio-tools (in Docker) | `../decree/proto` mounted | `sdk/src/opendecree/_generated/` (committed) |
+| TypeScript | ts-proto via buf | `../decree/proto` mounted | `src/generated/` (committed) |
+
+All generated stubs are committed to git — builds work without proto tooling. Regenerate only when proto changes.
+
+### decree-ui OpenAPI Spec
+
+The Admin GUI uses an OpenAPI spec (`openapi.json`) generated from the decree server's grpc-gateway. When the API changes:
+
+1. Regenerate in decree: `make docs`
+2. Copy to decree-ui: update `openapi.json`
+3. Regenerate the TypeScript client: `npm run generate-api`
+
 ## Current Versions
 
 | Repo | Latest | Next |
