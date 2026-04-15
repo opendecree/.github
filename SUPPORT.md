@@ -15,6 +15,7 @@ Please search existing discussions and issues before opening a new one.
 | Python SDK | [decree-python](https://github.com/opendecree/decree-python/issues) |
 | TypeScript SDK | [decree-typescript](https://github.com/opendecree/decree-typescript/issues) |
 | Admin GUI | [decree-ui](https://github.com/opendecree/decree-ui/issues) |
+| Demos and examples | [demos](https://github.com/opendecree/demos/issues) |
 
 Not sure? File it in the [main repo](https://github.com/opendecree/decree/issues) — we'll move it if needed.
 
