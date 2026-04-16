@@ -167,8 +167,8 @@ The Admin GUI uses an OpenAPI spec (`openapi.json`) generated from the decree se
 
 | Repo | Latest | Next |
 |------|--------|------|
-| decree | v0.5.0 (tags only, no GitHub Release) | v0.6.0-alpha.1 |
+| decree | v0.6.0-alpha.1 (GitHub Release + Go proxy) | v0.7.0 |
 | decree-python | v0.1.0 (PyPI: opendecree) | v0.2.0a1 |
 | decree-typescript | v0.1.0 (npm: @opendecree/sdk) | v0.2.0-alpha.1 |
-| decree-ui | (no releases) | v0.1.0-alpha.1 |
+| decree-ui | (no releases, Docker `:main` only) | v0.1.0-alpha.1 |
 | demos | (no releases) | — |
