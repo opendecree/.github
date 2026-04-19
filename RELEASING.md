@@ -41,6 +41,13 @@ sdk/configwatcher/v{X.Y.Z}
 sdk/tools/v{X.Y.Z}
 ```
 
+> **GitHub platform limit — push tags individually.** GitHub silently drops
+> **all** tag push events when more than three tags are pushed at once
+> ([docs](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)).
+> With seven tags per decree release, `git push origin --tags` results in zero
+> workflow triggers. The `/release` skill pushes each tag on its own line to
+> stay under the limit; do not replace that with `--tags` or a bulk push.
+
 **Trigger:** Push of `v*` tag triggers `release.yml`.
 
 **Artifacts:**
