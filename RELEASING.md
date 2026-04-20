@@ -30,7 +30,7 @@ Pre-release format differs by ecosystem:
 
 **Versioning:** Go multi-module — each module gets its own tag at release time.
 
-**Tags per release (7):**
+**Tags per release (8):**
 ```
 v{X.Y.Z}
 api/v{X.Y.Z}
@@ -38,13 +38,14 @@ cmd/decree/v{X.Y.Z}
 sdk/configclient/v{X.Y.Z}
 sdk/adminclient/v{X.Y.Z}
 sdk/configwatcher/v{X.Y.Z}
+sdk/grpctransport/v{X.Y.Z}
 sdk/tools/v{X.Y.Z}
 ```
 
 > **GitHub platform limit — push tags individually.** GitHub silently drops
 > **all** tag push events when more than three tags are pushed at once
 > ([docs](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)).
-> With seven tags per decree release, `git push origin --tags` results in zero
+> With eight tags per decree release, `git push origin --tags` results in zero
 > workflow triggers. The `/release` skill pushes each tag on its own line to
 > stay under the limit; do not replace that with `--tags` or a bulk push.
 
