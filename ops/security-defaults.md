@@ -18,12 +18,21 @@ Managed at `github.com/organizations/opendecree/settings/security`.
 
 Applied to `decree`, `decree-python`, `decree-typescript`, `decree-ui`, `demos`.
 
-| Setting | Tracked in | Notes |
+| Setting | State | Notes |
 |---|---|---|
-| Private vulnerability reporting | [opendecree/decree#151](https://github.com/opendecree/decree/issues/151) | UI: repo Settings → Security → Privately report a vulnerability |
-| CodeQL default setup | [opendecree/decree#150](https://github.com/opendecree/decree/issues/150) | UI: repo Settings → Code security → CodeQL analysis |
-| Branch protection on `main` | Enforced | `enforce_admins=true`, require PR, require status checks |
+| Private vulnerability reporting | ✅ on (all 5 repos) | `PUT /repos/{owner}/{repo}/private-vulnerability-reporting` |
+| CodeQL default setup | ✅ on (decree, decree-python, decree-typescript, decree-ui) | demos skipped — no source code. `PATCH /repos/{owner}/{repo}/code-scanning/default-setup` with `{"state":"configured"}` |
+| Branch protection on `main` | Enforced | `enforce_admins=true`, require PR, require status checks (incl. `Analyze (<lang>)` for CodeQL) |
 | Auto-delete merged branches | Enforced | Repo Settings → General → Pull Requests |
+
+### CodeQL required checks per repo
+
+| Repo | Required `Analyze (*)` contexts |
+|---|---|
+| decree | `Analyze (go)`, `Analyze (actions)` |
+| decree-python | `Analyze (python)`, `Analyze (actions)` |
+| decree-typescript | `Analyze (javascript-typescript)`, `Analyze (actions)` |
+| decree-ui | `Analyze (javascript-typescript)`, `Analyze (actions)` |
 
 ## Audit
 
@@ -46,8 +55,20 @@ gh api '/orgs/opendecree/members?filter=2fa_disabled' --jq 'length'
 # Expected: 0
 ```
 
+Verify CodeQL state per repo:
+
+```bash
+for r in decree decree-python decree-typescript decree-ui; do
+  echo -n "$r: "
+  gh api /repos/opendecree/$r/code-scanning/default-setup --jq .state
+done
+# Expected: "configured" for all
+```
+
 ## Related
 
-- [opendecree/decree#160](https://github.com/opendecree/decree/issues/160) — org-level defaults (this doc)
+- [opendecree/decree#160](https://github.com/opendecree/decree/issues/160) — org-level defaults
+- [opendecree/decree#150](https://github.com/opendecree/decree/issues/150) — CodeQL default setup
+- [opendecree/decree#151](https://github.com/opendecree/decree/issues/151) — private vulnerability reporting
 - [opendecree/decree#149](https://github.com/opendecree/decree/issues/149) — merge hygiene toggles across repos
 - [SECURITY.md](../SECURITY.md) — how to report vulnerabilities
