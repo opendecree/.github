@@ -1,0 +1,53 @@
+# Security Defaults
+
+Baseline security configuration for the `opendecree` org and all public repos. Keep this doc in sync with reality — if you flip a toggle, update this file.
+
+## Org-level (settings)
+
+Managed at `github.com/organizations/opendecree/settings/security`.
+
+| Setting | State | How to set |
+|---|---|---|
+| Require 2FA for all members | ✅ on | UI only — API field is silently ignored on Free plan |
+| Secret scanning on new repos | ✅ on | `PATCH /orgs/opendecree` `secret_scanning_enabled_for_new_repositories=true` |
+| Secret scanning push protection on new repos | ✅ on | `PATCH /orgs/opendecree` `secret_scanning_push_protection_enabled_for_new_repositories=true` |
+| Dependabot alerts on new repos | ✅ on | `PATCH /orgs/opendecree` `dependabot_alerts_enabled_for_new_repositories=true` |
+| Dependabot security updates on new repos | ✅ on | `PATCH /orgs/opendecree` `dependabot_security_updates_enabled_for_new_repositories=true` |
+
+## Per-repo (public repos)
+
+Applied to `decree`, `decree-python`, `decree-typescript`, `decree-ui`, `demos`.
+
+| Setting | Tracked in | Notes |
+|---|---|---|
+| Private vulnerability reporting | [opendecree/decree#151](https://github.com/opendecree/decree/issues/151) | UI: repo Settings → Security → Privately report a vulnerability |
+| CodeQL default setup | [opendecree/decree#150](https://github.com/opendecree/decree/issues/150) | UI: repo Settings → Code security → CodeQL analysis |
+| Branch protection on `main` | Enforced | `enforce_admins=true`, require PR, require status checks |
+| Auto-delete merged branches | Enforced | Repo Settings → General → Pull Requests |
+
+## Audit
+
+Verify org-level state:
+
+```bash
+gh api /orgs/opendecree --jq '{
+  two_factor_requirement_enabled,
+  secret_scanning_enabled_for_new_repositories,
+  secret_scanning_push_protection_enabled_for_new_repositories,
+  dependabot_alerts_enabled_for_new_repositories,
+  dependabot_security_updates_enabled_for_new_repositories
+}'
+```
+
+Verify member 2FA compliance:
+
+```bash
+gh api '/orgs/opendecree/members?filter=2fa_disabled' --jq 'length'
+# Expected: 0
+```
+
+## Related
+
+- [opendecree/decree#160](https://github.com/opendecree/decree/issues/160) — org-level defaults (this doc)
+- [opendecree/decree#149](https://github.com/opendecree/decree/issues/149) — merge hygiene toggles across repos
+- [SECURITY.md](../SECURITY.md) — how to report vulnerabilities
