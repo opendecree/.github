@@ -26,6 +26,10 @@ OpenDecree is an open-source configuration management platform built for **busin
 
 Alpha — all projects are under active development and subject to change.
 
+## Community
+
+Questions, ideas, show-and-tell — [OpenDecree Discussions](https://github.com/orgs/opendecree/discussions) is our single community hub across all repos.
+
 ## License
 
 Apache 2.0
