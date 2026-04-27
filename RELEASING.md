@@ -141,6 +141,9 @@ Proto stubs are the coupling point. Both SDKs generate stubs from decree's `prot
 | decree Go SDK v0.9.0-alpha.1 | same repo (api/ module) | decree ≥ v0.9.0-alpha.1 |
 | decree-python v0.2.0a1 | decree v0.8.0-alpha.1 proto | decree ≥ v0.8.0-alpha.1 |
 | decree-typescript v0.2.0-alpha.1 | decree v0.8.0-alpha.1 proto | decree ≥ v0.8.0-alpha.1 |
+| decree Go SDK v0.10.0-alpha.1 | same repo (api/ module) | decree ≥ v0.10.0-alpha.1 |
+| decree-python v0.3.0a1 | decree v0.10.0-alpha.1 proto | decree ≥ v0.10.0-alpha.1 |
+| decree-typescript v0.3.0-alpha.1 | decree v0.10.0-alpha.1 proto | decree ≥ v0.10.0-alpha.1 |
 
 **Rule:** When decree makes a proto change (new field, new RPC, breaking change), SDKs must regenerate stubs and release. Non-proto decree changes don't require SDK releases.
 
@@ -179,8 +182,8 @@ The Admin GUI uses an OpenAPI spec (`openapi.json`) generated from the decree se
 
 | Repo | Latest | Next |
 |------|--------|------|
-| decree | v0.9.0-alpha.1 (GitHub Release + Go proxy) | v0.10.0-alpha.1 |
-| decree-python | v0.2.0a1 (PyPI: opendecree) | v0.3.0a1 |
-| decree-typescript | v0.2.0-alpha.1 (npm: @opendecree/sdk) | v0.3.0-alpha.1 |
+| decree | v0.10.0-alpha.1 (GitHub Release + Go proxy) | v0.11.0-alpha.1 |
+| decree-python | v0.3.0a1 (PyPI: opendecree) | v0.4.0a1 |
+| decree-typescript | v0.3.0-alpha.1 (npm: @opendecree/sdk) | v0.4.0-alpha.1 |
 | decree-ui | v0.1.0-alpha.1 (GHCR Docker image) | v0.2.0-alpha.1 |
 | demos | (no releases) | — |
