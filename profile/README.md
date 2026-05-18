@@ -30,6 +30,8 @@ Alpha — all projects are under active development and subject to change.
 
 Questions, ideas, show-and-tell — [OpenDecree Discussions](https://github.com/orgs/opendecree/discussions) is our single community hub across all repos.
 
+See [GOVERNANCE.md](https://github.com/opendecree/.github/blob/main/GOVERNANCE.md) for how the project is governed.
+
 ## License
 
 Apache 2.0
