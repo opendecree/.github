@@ -1,0 +1,32 @@
+name: Welcome (reusable)
+on:
+  workflow_call:
+    inputs:
+      repo_name:
+        required: false
+        type: string
+        default: ""
+permissions:
+  issues: write
+  pull-requests: write
+jobs:
+  welcome:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/first-interaction@v3
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          issue_message: |
+            Thanks for opening your first issue! We'll take a look soon.
+
+            In the meantime:
+            - Check [CONTRIBUTING.md](https://github.com/opendecree/${{ inputs.repo_name }}/blob/main/CONTRIBUTING.md) for development setup
+            - Search [Discussions](https://github.com/opendecree/${{ inputs.repo_name }}/discussions) for related topics
+          pr_message: |
+            Thanks for your first pull request! We appreciate the contribution.
+
+            Before review, please make sure:
+            - Relevant tests pass
+            - The PR targets `main` and has a clear description
+            - See [CONTRIBUTING.md](https://github.com/opendecree/${{ inputs.repo_name }}/blob/main/CONTRIBUTING.md) for the full checklist
