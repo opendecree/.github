@@ -1,16 +1,67 @@
-# OpenDecree
+<p align="center">
+  <img src="https://raw.githubusercontent.com/opendecree/decree/main/assets/logo.png" alt="OpenDecree" width="150">
+</p>
 
-Schema-driven business configuration management. Define typed configuration schemas, manage per-tenant values, track every change.
+<h1 align="center">OpenDecree</h1>
 
-## What is it?
+<p align="center"><strong>Stop hard-coding fees, limits, and business rules — and redeploying every time one changes.</strong></p>
 
-OpenDecree is an open-source configuration management platform built for **business configuration** — feature flags, pricing rules, tenant settings, operational parameters — not infrastructure config. It provides:
+<p align="center"><em>Typed business configuration: the layer between feature flags and infrastructure config.</em></p>
 
-- **Typed schemas** — define fields with types (integer, string, bool, time, duration, url, json), constraints, and metadata
-- **Multi-tenancy** — isolated configuration per tenant with shared schemas
-- **Full audit trail** — every change tracked with actor, timestamp, and diff
-- **gRPC API** — fast, type-safe, with OpenAPI/REST gateway
-- **SDKs** — Go, Python, TypeScript with real-time config watching
+> **Alpha** — all OpenDecree projects are under active development and subject to change. Not recommended for production use yet.
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/opendecree/decree/main/assets/demo.gif" alt="OpenDecree quickstart demo: schema → config → watch" width="800">
+</p>
+
+<p align="center">
+  <a href="https://github.com/opendecree/demos"><strong>&raquo; Try it in 5 minutes — opendecree/demos</strong></a>
+</p>
+
+---
+
+## Schema → APIs → SDKs
+
+Define a field once:
+
+```yaml
+# payments.decree.schema.yaml
+fields:
+  payments.fee:
+    type: number
+    constraints: { min: 0.0, max: 1.0 }
+```
+
+Get a typed, validated read everywhere:
+
+```go
+// Go
+fee, _ := client.GetFloat(ctx, tenantID, "payments.fee") // float64
+```
+
+```python
+# Python
+fee = client.get(tenant_id, "payments.fee", float)
+```
+
+```typescript
+// TypeScript
+const fee = await client.get(tenantId, "payments.fee", Number);
+```
+
+---
+
+## Why OpenDecree?
+
+OpenDecree sits between **feature flags** (release toggles) and **infrastructure config** (low-level key-value) — purpose-built for typed business config: fees, limits, approval rules, settlement windows.
+
+| Capability | Feature Flags | Infra Config | **OpenDecree** |
+|---|---|---|---|
+| Typed values | bool / variant only | strings only | ✓ int, number, string, bool, time, duration, url, json |
+| Multi-tenant | limited (segments) | ✗ | ✓ first-class, with field-level locking |
+| Audit trail + rollback | limited | ✗ | ✓ full history, rollback to any state |
+
+---
 
 ## Repositories
 
