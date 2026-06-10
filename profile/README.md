@@ -75,7 +75,7 @@ OpenDecree sits between **feature flags** (release toggles) and **infrastructure
 
 ## Status
 
-Alpha — all projects are under active development and subject to change.
+Alpha — all projects are under active development and subject to change. See the **[Roadmap](https://github.com/opendecree/decree/blob/main/ROADMAP.md)** for what is stable today and the path to a 1.0 stable release.
 
 ## Community
 
