@@ -30,24 +30,43 @@ Pre-release format differs by ecosystem:
 
 **Versioning:** Go multi-module — each module gets its own tag at release time.
 
-**Tags per release (8):**
+**Tags per release (13 as of v0.12 — derive dynamically, do not hardcode):**
 ```
 v{X.Y.Z}
 api/v{X.Y.Z}
 cmd/decree/v{X.Y.Z}
-sdk/configclient/v{X.Y.Z}
 sdk/adminclient/v{X.Y.Z}
+sdk/configclient/v{X.Y.Z}
 sdk/configwatcher/v{X.Y.Z}
 sdk/grpctransport/v{X.Y.Z}
 sdk/tools/v{X.Y.Z}
+sdk/retry/v{X.Y.Z}
+sdk/contrib/envconfig/v{X.Y.Z}
+sdk/contrib/koanf/v{X.Y.Z}
+sdk/contrib/viper/v{X.Y.Z}
+contrib/decree-docs/v{X.Y.Z}
 ```
+
+> **Derive the tag set from the live module list**, not this static list — SDK
+> submodules are added over time and this list was stale at 8 through v0.11
+> (the v0.12 release nearly under-tagged `sdk/retry`, `sdk/contrib/*`, and
+> `contrib/decree-docs`). Enumerate `go.mod` files, excluding
+> `examples/ e2e/ stress/ chaos/ fixtures/ .claude/`.
+>
+> **Reconcile inter-module `require` versions before tagging.** Every intra-repo
+> `require github.com/opendecree/decree/*` — across **all** modules, including
+> the non-published `examples/ e2e/ stress/ chaos/` — must be bumped to the
+> release version in a PR merged before tagging. `replace` directives only apply
+> locally; downstream consumers resolve the `require` version, and consumer/test
+> modules fail CI's readonly build (`updates to go.mod needed`) if left stale.
 
 > **GitHub platform limit — push tags individually.** GitHub silently drops
 > **all** tag push events when more than three tags are pushed at once
 > ([docs](https://docs.github.com/en/actions/writing-workflows/choosing-when-your-workflow-runs/events-that-trigger-workflows)).
-> With eight tags per decree release, `git push origin --tags` results in zero
-> workflow triggers. The `/release` skill pushes each tag on its own line to
-> stay under the limit; do not replace that with `--tags` or a bulk push.
+> With 13+ tags per decree release, `git push origin --tags` results in zero
+> workflow triggers. Push the release `v{X.Y.Z}` tag **alone first** (so it
+> fires `release.yml`), then the module tags in batches of ≤3. Do not replace
+> that with `--tags` or a bulk push.
 
 **Trigger:** Push of `v*` tag triggers `release.yml`.
 
@@ -63,6 +82,14 @@ sdk/tools/v{X.Y.Z}
 **Pre-release:** GoReleaser `prerelease: auto` detects `-alpha`, `-beta`, `-rc` and marks the GitHub Release accordingly. Docker images still publish with the pre-release tag.
 
 **Checklist:** `docs/development/checklists.md` — "Before Release Tag" and "Release Tag Process" sections.
+
+**Pipeline gotchas (surfaced in the v0.12 release; fixes landed):**
+- `release.yml` needs `syft` installed for the GoReleaser SBOM step — the runner no longer ships it. Pin `anchore/sbom-action/download-syft` with a **bare-SHA** `uses:` line (an inline `# version` comment fails `check-supply-chain-pins.sh`, which reads everything after `@` as the SHA). (decree#938)
+- GoReleaser must **not** build docker images — the dedicated `build`/`images` jobs do that from the repo-root context; GoReleaser's `dist/` build context can't satisfy the from-source `build/Dockerfile`. (decree#942)
+- **Validate GoReleaser locally before tagging:** `goreleaser release --snapshot --clean --skip=publish,sbom`. Each failed release burns the version — tags are immutable.
+- When watching `publish.yml`, match the publish workflow **by name** — a separate `Deploy Docs` workflow also fires on tags and can mislead a "latest run" finder.
+- **Fresh-DB bootstrap:** the v0.12 server needs the `decree_app` role + applied migrations before it starts (RLS `SET ROLE`). The simplified quickstart/demos path has no migrate step → it breaks on v0.12. (decree#946)
+- **SDK regen worktrees must live at workspace level** (sibling to `decree/`) — the Python Makefile and TS `buf.gen.yaml` read `../decree/proto`; a nested `.git/worktrees/` path breaks it.
 
 ### decree-python
 
@@ -144,6 +171,9 @@ Proto stubs are the coupling point. Both SDKs generate stubs from decree's `prot
 | decree Go SDK v0.10.0-alpha.1 | same repo (api/ module) | decree ≥ v0.10.0-alpha.1 |
 | decree-python v0.3.0a1 | decree v0.10.0-alpha.1 proto | decree ≥ v0.10.0-alpha.1 |
 | decree-typescript v0.3.0-alpha.1 | decree v0.10.0-alpha.1 proto | decree ≥ v0.10.0-alpha.1 |
+| decree Go SDK v0.12.0-alpha.3 | same repo (api/ module) | decree ≥ v0.12.0-alpha.3 |
+| decree-python v0.4.0a1 | decree v0.12.0-alpha.3 proto | decree ≥ v0.12.0-alpha.3 |
+| decree-typescript v0.4.0-alpha.1 | decree v0.12.0-alpha.3 proto | decree ≥ v0.12.0-alpha.3 |
 
 **Rule:** When decree makes a proto change (new field, new RPC, breaking change), SDKs must regenerate stubs and release. Non-proto decree changes don't require SDK releases.
 
